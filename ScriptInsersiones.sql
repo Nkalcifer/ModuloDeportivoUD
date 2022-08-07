@@ -7,7 +7,7 @@
 /*==============================================================*/
  
 --  reseteo Base:
- START D:\Archivos\Downloads\BaseDeportes.sql;
+ START D:\Archivos\Documents\ModuloDeportivo\ModuloDeportivoUD\BaseDeportes.sql;
 
  -- Inserts in Tables no Fks
 INSERT INTO TipoEspacio VALUES ('1', 'Unidad');
@@ -68,12 +68,31 @@ INSERT INTO TipoElemento VALUES ('11', 'Aros hula-hula');
 INSERT INTO TipoElemento VALUES ('12', 'Chaleco Boxeo');
 INSERT INTO TipoElemento VALUES ('13', 'Malla Pimpon');
 SELECT COUNT(IDTIPOESPACIO) FROM TipoEspacio;
+-- ROMPIMIENTO DEPORTE_ELEMENTO DEPORTIVO
 
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('2', '6');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('3', '5');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('4', '3');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('5', '2');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('6', '12');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('6', '11');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('6', '9');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('7', '9');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('7', '10');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('8', '10');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('9', '5');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('10', '10');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('11', '9');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('12', '10');
+INSERT INTO DEPORTE_TIPOELEMENTO VALUES ('13', '3');
+
+-- Cursos
 INSERT INTO Actividad VALUES ('CU', 'Curso');
 INSERT INTO Actividad VALUES ('PR', 'Practica');
 INSERT INTO Actividad VALUES ('EN', 'Entrenamiento');
 SELECT COUNT(IDACTIVIDAD) FROM Actividad;
 
+-- Horas
 INSERT INTO Hora VALUES ('06:00');
 INSERT INTO Hora VALUES ('07:00');
 INSERT INTO Hora VALUES ('08:00');
@@ -93,6 +112,7 @@ INSERT INTO Hora VALUES ('21:00');
 INSERT INTO Hora VALUES ('22:00');
 SELECT COUNT(IDHORA) FROM Hora;
 
+-- Dias
 INSERT INTO Dia VALUES ('1', 'Domingo');
 INSERT INTO Dia VALUES ('2', 'Lunes');
 INSERT INTO Dia VALUES ('3', 'Martes');
@@ -102,6 +122,7 @@ INSERT INTO Dia VALUES ('6', 'Viernes');
 INSERT INTO Dia VALUES ('7', 'Sabado');
 SELECT COUNT(IDDIA) FROM Dia;
 
+-- Marcas
 INSERT INTO Marca VALUES ('10', 'Nike');
 INSERT INTO Marca VALUES ('20', 'Adidas');
 INSERT INTO Marca VALUES ('30', 'Puma');
@@ -116,11 +137,13 @@ INSERT INTO Marca VALUES ('110', 'Ti Colombia');
 INSERT INTO Marca VALUES ('120', 'Athletic');
 SELECT COUNT(IDMARCA) FROM Marca;
 
+-- Roles 
 INSERT INTO Rol VALUES ('1', 'Director Deportivo');
 INSERT INTO Rol VALUES ('2', 'Docente');
 INSERT INTO Rol VALUES ('3', 'Entrenador');
 SELECT COUNT(IDROL) FROM Rol;
 
+-- Cargos
 INSERT INTO Cargo VALUES ('1', 'Auxiliar');
 INSERT INTO Cargo VALUES ('2', 'Docente');
 INSERT INTO Cargo VALUES ('3', 'Director Deportivo');
@@ -217,26 +240,26 @@ COMMIT;
     --  2 auxiliares
     --  3 entrenadores
 -- Director Deportivo
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('307', 'Neider', 'Puentes', CURRENT_DATE, 'npuentess@.udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('307', 'Neider', 'Puentes', CURRENT_DATE, 'npuentess@udistrital.edu.co');
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (1, '307', '3', '0', CURRENT_DATE);
 --Docentes
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('2', 'Andrea', 'Sanchez', CURRENT_DATE, 'asanchezs@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('3', 'Juan', 'Perez', CURRENT_DATE, 'jperezz@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('4', 'Andres', 'Suarez', CURRENT_DATE, 'asuarezm@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('5', 'Felipe', 'Reyes', CURRENT_DATE, 'freyesc@.udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('2', 'Andrea', 'Sanchez', CURRENT_DATE, 'asanchezs@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('3', 'Juan', 'Perez', CURRENT_DATE, 'jperezz@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('4', 'Andres', 'Suarez', CURRENT_DATE, 'asuarezm@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('5', 'Felipe', 'Reyes', CURRENT_DATE, 'freyesc@udistrital.edu.co');
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (2, '2', '2', '11', CURRENT_DATE);
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (3, '3', '2', '11', CURRENT_DATE);
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (4, '4', '2', '12', CURRENT_DATE);
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (5, '5', '2', '12', CURRENT_DATE);
 --Auxiliares
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('63', 'Diana', 'Uscategui', CURRENT_DATE, 'duscateguitt@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('777', 'Adriana', 'Hernandez', CURRENT_DATE, 'ahernandezf@.udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('63', 'Diana', 'Uscategui', CURRENT_DATE, 'duscateguitt@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('777', 'Adriana', 'Hernandez', CURRENT_DATE, 'ahernandezf@udistrital.edu.co');
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (6, '63', '1', '11', CURRENT_DATE);
 INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (7, '777', '1', '11', CURRENT_DATE);
 --Entreandores
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('8', 'Marcela', 'Rey', CURRENT_DATE, 'mreys@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('9', 'Alejandro', 'Abondano', CURRENT_DATE, 'jperezz@.udistrital.edu.co');
-INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('10', 'Alexander', 'Carvajal', CURRENT_DATE, 'acarvajalm@.udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('8', 'Marcela', 'Rey', CURRENT_DATE, 'mreys@.udistritaledu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('9', 'Alejandro', 'Abondano', CURRENT_DATE, 'jperezz@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('10', 'Alexander', 'Carvajal', CURRENT_DATE, 'acarvajalm@udistrital.edu.co');
 SELECT COUNT(CODEMPLEADO) FROM Empleado;
 -- Insersion Equipos
 INSERT INTO Equipo VALUES (1, '1','2',CURRENT_DATE);
@@ -268,9 +291,10 @@ SELECT COUNT(CODESTU) FROM Estudiante;
 -- Incluir registros para la programación: 
 -- 4registros  de cursos
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (1, '20221', 'CU', '1', '08:00', '10:00', '17', '1', 15, 9);
-INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (2, '20221', 'CU', '2', '12:00', '14:00', '2', '2', 15, 9);
-INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (3, '20221', 'CU', '3', '10:00', '12:00', '3', '5', 15, 9);
-INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (4, '20221', 'CU', '4', '08:00', '10:00', '4', '10', 15, 9);
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (2, '20221', 'CU', '2', '12:00', '14:00', '20', '4', 15, 9);
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (3, '20221', 'CU', '3', '10:00', '12:00', '21', '4', 15, 9);
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (4, '20221', 'CU', '4', '08:00', '10:00', '15', '6', 15, 9);
+
 -- 4 registros de equipos entrenamiento
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (5, '20221', 'EN', '2', '14:00', '15:00', '22', '4', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (6, '20221', 'EN', '3', '10:00', '11:00', '20', '4', 15, 9);
@@ -281,45 +305,62 @@ INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*H
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (10, '20221', 'PR', '3', '10:00', '12:00', '10', '9', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (11, '20221', 'PR', '2', '15:00', '17:00', '5', '1', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (12, '20221', 'PR', '1', '12:00', '13:00', '21', '6', 15, 9);
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (13, '20221', 'CU', '1', '08:00', '22:00', '23', '10', 15, 9);
 SELECT COUNT(CONSECPROGRA) FROM Programacion;
-
 -- Incluir 10 registros en la tabla espacio-deporte
 INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('20', '4');
 INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('21', '4');
 INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('22', '4');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('1', '1');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('2', '2');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('3', '5');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('4', '10');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('10', '9');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('8', '9');
-INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('7', '8');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('17', '1');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('18', '1');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('14', '6');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('15', '6');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('53', '9');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('54', '9');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('1', '5');
+INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('23', '10');
 SELECT COUNT(IDDEPORTE) FROM Espacio_Deporte;
+
+
 -- Incluir 10 registros en la tabla ElemenDeportivo con estado activo y prestado para las 2 sedes (Para elprestado se incluyen en la tabla pestramo)
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (1, '1', '1', '10', '1', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (2, '1', '2', '20', '2', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (3, '1', '3', '20', '3', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (4, '1', '5', '30', '4', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (5, '1', '6', '70', '5', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (6, '1', '8', '100', '6', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (7, '1', '9', '120', '3', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (8, '1', '10', '10', '6', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (9, '1', '12', '50', '6', CURRENT_DATE, 10);
-INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (10, '1', '13', '60', '10', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (1, '1', '1', '10', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (2, '1', '2', '20', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (3, '1', '3', '20', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (4, '1', '5', '30', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (5, '1', '6', '70', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (6, '1', '8', '100', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (7, '1', '9', '120', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (8, '1', '10', '10', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (9, '1', '12', '50', '11', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (10, '1', '13', '60', '11', CURRENT_DATE, 10);
+
+-- sede 12
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (11, '1', '1', '10', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (12, '1', '2', '20', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (13, '1', '3', '20', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (14, '1', '5', '30', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (15, '1', '6', '70', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (16, '1', '8', '100', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (17, '1', '9', '120', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (18, '1', '10', '10', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (19, '1', '12', '50', '12', CURRENT_DATE, 10);
+INSERT INTO ElementoDeportivo (CONSECELEMENTO, IDESTADO, IDTIPOELEMENTO, IDMARCA, CODESPACIO, FECHAREGISTRO, CANTIDAD) VALUES (20, '1', '13', '60', '12', CURRENT_DATE, 10); 
 SELECT COUNT(CONSECELEMENTO) FROM ElementoDeportivo;
 COMMIT;
+
+
 -- Incluir los demás registros necesarios para que funcione el código 
 
 -- Probar
 
 -- llenar responsable
-
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (1, 1, '2', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (2, 2, '3', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (3, 3, '4', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (4, 4, '5', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (5, 5, '8', '24/05/2022', '24/11/2022');
-
+INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (6, 13, '2', '24/05/2022', '24/11/2022');
+COMMIT;
 -- Select Aux.nomAuxiliar, Aux.sede, CURRENT_DATE fecha
 -- from (select distinct E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
 --     from empleado E, empleado_cargo EC, espacio ES
@@ -330,28 +371,59 @@ INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFI
 --     from empleado E, empleado_cargo EC, espacio ES
 --     where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2';
     
+--- 3.2.1.1
+SELECT DISTINCT E.NOMEMPLEADO NOMBRE E.APELLEMPLEADO DOCENTE, 
+FROM EMPLEADO E
+WHERE UPPER(E.NOMEMPLEADO) = 'NEIDER'
+AND UPPER(E.APELLEMPLEADO) = 'PUENTES';
 
--- Responsable -> proghramacion -> Actividad .. -> Espacio .. -> Deporte .. inscritos
-
-SELECT Pro.CONSECPROGRA, Act.DESACTIVIDAD, Esp.nomEspacio, Dep.nomDeporte, Pro.noInscrito
+Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+    from empleado E, empleado_cargo EC, espacio ES
+    where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+ where 'ANDRES' = UPPER(Prof.nomProf) AND 'SUAREZ' =UPPER(Prof.apellProf);
+--- 3.2.1.2
+SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
 FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
-WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD AND Pro.CODESPACIO=Esp.CODESPACIO AND Pro.IDDEPORTE=Dep.IDDEPORTE
-AND TO_CHAR(CURRENT_DATE, 'HH:MI')>Pro.IDHORA AND TO_CHAR(CURRENT_DATE, 'HH:MI') < Pro.HOR_IDHORA
-AND CURRENT_DATE>Res.FECHAINI AND CURRENT_DATE<Res.FECHAFIN
-AND Res.CODEMPLEADO='4';
+WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+AND Pro.CODESPACIO=Esp.CODESPACIO 
+AND Pro.IDDEPORTE=Dep.IDDEPORTE
+AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+AND CURRENT_DATE>Res.FECHAINI 
+AND CURRENT_DATE<Res.FECHAFIN
+AND Res.CODEMPLEADO='2';
 
-SELECT TE.DESCTIPOELEMENTO, EL.CANTIDAD
-FROM (SELECT Pro.CODESPACIO SEDE,  Dep.IDDEPORTE DEP
+SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
+FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
     FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
-    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD AND Pro.CODESPACIO=Esp.CODESPACIO AND Pro.IDDEPORTE=Dep.IDDEPORTE
-    AND TO_CHAR(CURRENT_DATE, 'HH:MI')>Pro.IDHORA AND TO_CHAR(CURRENT_DATE, 'HH:MI') < Pro.HOR_IDHORA
-    AND CURRENT_DATE>Res.FECHAINI AND CURRENT_DATE<Res.FECHAFIN
-    AND Res.CODEMPLEADO='4') CURSO, ElementoDeportivo EL, Estado ES, TipoElemento TE
-WHERE EL.IDESTADO='1' AND CURSO.SEDE=EL.CODESPACIO ;
+    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+    AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+    AND Pro.CODESPACIO=Esp.CODESPACIO 
+    AND Pro.IDDEPORTE=Dep.IDDEPORTE
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+    AND CURRENT_DATE>Res.FECHAINI 
+    AND CURRENT_DATE<Res.FECHAFIN
+    AND Res.CODEMPLEADO='2') CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+WHERE CURSO.SEDE in ED.CODESPACIO 
+AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+AND DTE.IDDEPORTE=D.IDDEPORTE 
+AND CURSO.idDep=DTE.IDDEPORTE
+AND E.IDESTADO=ED.IDESTADO;
 
--- FALTA ACABAR EL WHERE ANTERIOR VAMOS EN LA COMPARACION DEL DEPORTE,PARA TRAER TODA LA LISTA DE ELEMENTOS DEPORTIVOS. 
+
+-- 3.2.1.4
+--Registro en la Asistencia
+-- INSERT INTO ASISTIRRESPONSABLE (CONSECPROGRA, CONSECRES, CONSECASISRES, FECHAASISRES, HORAASISRES) VALUES (1, 1, 1, CURRENT_DATE, TO_CHAR(CURRENT_DATE, 'HH24:MM'));
+-- INSERT INTO PRESTAMO (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) VALUES (1, 1, 1, 1, 1);
+-- --Actualizacion de Prestamo
+-- UPDATE ELEMENTODEPORTIVO SET IDESTADO = '1' WHERE CONSECELEMENTO = 1;
 
 
 
-SELECT TO_CHAR(Pro.IDHORA) HORAINI, TO_CHAR(CURRENT_DATE, 'HH:MI') HORAACT FROM programacion Pro WHERE Pro.IDHORA>TO_CHAR(CURRENT_DATE, 'HH:MI');
+--Registro Prestamo
 -- Organizar Empleados y Espacios
+
