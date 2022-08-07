@@ -377,12 +377,13 @@ FROM EMPLEADO E
 WHERE UPPER(E.NOMEMPLEADO) = 'NEIDER'
 AND UPPER(E.APELLEMPLEADO) = 'PUENTES';
 
-Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
-from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
-    from empleado E, empleado_cargo EC, espacio ES
-    where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
- where 'ANDRES' = UPPER(Prof.nomProf) AND 'SUAREZ' =UPPER(Prof.apellProf);
---- 3.2.1.2
+-- -- 3.2.1.1
+-- Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+-- from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+--     from empleado E, empleado_cargo EC, espacio ES
+--     where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+--  where 'ANDRES' = UPPER(Prof.nomProf) AND 'SUAREZ' =UPPER(Prof.apellProf);
+-- --- 3.2.1.2
 SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
 FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
 WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
@@ -414,13 +415,12 @@ AND DTE.IDDEPORTE=D.IDDEPORTE
 AND CURSO.idDep=DTE.IDDEPORTE
 AND E.IDESTADO=ED.IDESTADO;
 
-
 -- 3.2.1.4
 --Registro en la Asistencia
 -- INSERT INTO ASISTIRRESPONSABLE (CONSECPROGRA, CONSECRES, CONSECASISRES, FECHAASISRES, HORAASISRES) VALUES (1, 1, 1, CURRENT_DATE, TO_CHAR(CURRENT_DATE, 'HH24:MM'));
 -- INSERT INTO PRESTAMO (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) VALUES (1, 1, 1, 1, 1);
 -- --Actualizacion de Prestamo
--- UPDATE ELEMENTODEPORTIVO SET IDESTADO = '1' WHERE CONSECELEMENTO = 1;
+-- UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = 1;
 
 
 
