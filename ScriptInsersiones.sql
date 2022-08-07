@@ -113,13 +113,13 @@ INSERT INTO Hora VALUES ('22:00');
 SELECT COUNT(IDHORA) FROM Hora;
 
 -- Dias
-INSERT INTO Dia VALUES ('1', 'Domingo');
-INSERT INTO Dia VALUES ('2', 'Lunes');
-INSERT INTO Dia VALUES ('3', 'Martes');
-INSERT INTO Dia VALUES ('4', 'Miercoles');
-INSERT INTO Dia VALUES ('5', 'Jueves');
-INSERT INTO Dia VALUES ('6', 'Viernes');
-INSERT INTO Dia VALUES ('7', 'Sabado');
+INSERT INTO Dia VALUES ('1', 'Lunes');
+INSERT INTO Dia VALUES ('2', 'Martes');
+INSERT INTO Dia VALUES ('3', 'Miercoles');
+INSERT INTO Dia VALUES ('4', 'Jueves');
+INSERT INTO Dia VALUES ('5', 'Viernes');
+INSERT INTO Dia VALUES ('6', 'Sabado');
+INSERT INTO Dia VALUES ('7', 'Domingo');
 SELECT COUNT(IDDIA) FROM Dia;
 
 -- Marcas
@@ -260,6 +260,7 @@ INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('8', 'Marcela', 'Rey', CURRENT_DATE, 'mreys@.udistritaledu.co');
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('9', 'Alejandro', 'Abondano', CURRENT_DATE, 'jperezz@udistrital.edu.co');
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('10', 'Alexander', 'Carvajal', CURRENT_DATE, 'acarvajalm@udistrital.edu.co');
+INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('999', 'LIBRE', 'PASANTE', CURRENT_DATE, 'correo.udistrital.edu.co');
 SELECT COUNT(CODEMPLEADO) FROM Empleado;
 -- Insersion Equipos
 INSERT INTO Equipo VALUES (1, '1','2',CURRENT_DATE);
@@ -286,6 +287,7 @@ INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, co
 INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20191034002, 11, 'Cinthya', 'Ruiz', CURRENT_DATE, 'cruizh@udistrital.edu.co', TO_DATE('1996/12/11', 'YYYY/MM/DD'));
 INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20201010013, 13, 'Felipe', 'Gomez', CURRENT_DATE, 'fgomezg@udistrital.edu.co', TO_DATE('2005/11/17', 'YYYY/MM/DD'));
 INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20202010056, 12, 'Alberto', 'Castano', CURRENT_DATE, 'acastanoj@udistrital.edu.co', TO_DATE('2003/03/15', 'YYYY/MM/DD'));
+INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20182020101, 12, 'Juanito', 'Pasante', CURRENT_DATE, 'jpasante@udistrital.edu.co', TO_DATE('1997/03/15', 'YYYY/MM/DD'));
 SELECT COUNT(CODESTU) FROM Estudiante;
 
 -- Incluir registros para la programación: 
@@ -305,7 +307,10 @@ INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*H
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (10, '20221', 'PR', '3', '10:00', '12:00', '10', '9', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (11, '20221', 'PR', '2', '15:00', '17:00', '5', '1', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (12, '20221', 'PR', '1', '12:00', '13:00', '21', '6', 15, 9);
+-- Curso Nuevo
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (13, '20221', 'CU', '1', '08:00', '22:00', '23', '10', 15, 9);
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (14, '20221', 'PR', '1', '08:00', '22:00', '21', '4', 15, 9);
+
 SELECT COUNT(CONSECPROGRA) FROM Programacion;
 -- Incluir 10 registros en la tabla espacio-deporte
 INSERT INTO Espacio_Deporte (codEspacio, idDeporte) VALUES ('20', '4');
@@ -360,6 +365,7 @@ INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFI
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (4, 4, '5', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (5, 5, '8', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (6, 13, '2', '24/05/2022', '24/11/2022');
+INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODESTU, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (7, 14, '20182020101','999', '24/05/2022', '24/11/2022');
 COMMIT;
 -- Select Aux.nomAuxiliar, Aux.sede, CURRENT_DATE fecha
 -- from (select distinct E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
@@ -421,9 +427,37 @@ AND E.IDESTADO=ED.IDESTADO;
 -- INSERT INTO PRESTAMO (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) VALUES (1, 1, 1, 1, 1);
 -- --Actualizacion de Prestamo
 -- UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = 1;
+-- 3.2.2.1.
+SELECT E.CODESTU CODIGO, E.NOMESTU NOMBRE, E.APELESTU APELLIDO, SE.NOMESPACIO SEDE, E.CORREOUDESTU CORREO, D.NOMDIA DIA, P.IDPERIODO PERIODO,  P.IDHORA HORAINI
+FROM ESTUDIANTE E, RESPONSABLE R, DIA D, PROGRAMACION P, ESPACIO ES, ESPACIO SE
+WHERE E.CODESTU=R.CODESTU
+AND E.CODESTU='20182020101'
+AND R.CONSECPROGRA = P.CONSECPROGRA
+AND P.IDDIA = D.IDDIA
+AND P.CODESPACIO=ES.CODESPACIO
+AND ES.ESP_CODESPACIO=SE.CODESPACIO;
+
+SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
+FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep, DIA D
+WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA
+AND Res.CODESTU='20182020101'
+AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+AND Pro.CODESPACIO=Esp.CODESPACIO 
+AND Pro.IDDEPORTE=Dep.IDDEPORTE
+AND D.IDDIA=PRO.IDDIA
+-- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(IDHORA,'HH24:MI')-(15/1440), 'HH24:MI') 
+-- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
+AND CURRENT_DATE>Res.FECHAINI
+AND CURRENT_DATE<Res.FECHAFIN
+AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/;
 
 
+SELECT *
+FROM HORA
+WHERE TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(IDHORA,'HH24:MI')-(15/1440), 'HH24:MI') AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI');
 
---Registro Prestamo
--- Organizar Empleados y Espacios
+select to_char(TO_DATE(CURRENT_DATE,'dd/mm/yyyy'), 'Day') Dia
+from dual;
 
+select to_char(CURRENT_DATE, 'DAY', 'NLS_DATE_LANGUAGE=SPANISH')
+from dual
