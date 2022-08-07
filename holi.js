@@ -1,7 +1,7 @@
 const express = require('express')
 const oracledb = require('oracledb');
 const app = express();
-const port = 3000;
+
 var password = '1234';
 
 async function selectAllEmployees(req, res) {
@@ -41,4 +41,6 @@ async function selectAllEmployees(req, res) {
 app.get('/estudiantes', function (req, res)  {
     selectAllEmployees(req, res);
 })
+
+const port = 3001;
 app.listen(port, () => console.log("nodeOracleRestApi app listening on port %s!", port))
