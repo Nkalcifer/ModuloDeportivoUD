@@ -1,8 +1,9 @@
 const express = require('express');
 const oracledb = require('oracledb');
+const cors =require('cors');
 
 const app = express();
-
+app.use(cors());
 const port = 3000;
 
 var password = '1234';
@@ -75,7 +76,7 @@ async function consulPasante(response, idPasante) {
         if (resultPasante.rows.length == 0) {
             return response.send('El usuario ingresado no es un pasante');
         } else if (resultPasante.rows.length != 0 && resultPLibres.rows.length==0) {
-            return response.send('El pasante no tiene pracrtica libre en este momento');
+            return response.send([resultPasante.rows[0],'El pasante no tiene pracrtica libre en este momento']);
         }else if (resultPasante.rows.length != 0 && resultPLibres.rows.length != 0) {
             result = [resultPasante.rows[0], resultPLibres.rows[0],resultElementos.rows];
             return response.send(result);

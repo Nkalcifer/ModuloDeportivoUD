@@ -1,9 +1,11 @@
 const express = require('express');
 const oracledb = require('oracledb');
+const cors =require('cors');
 
 const app = express();
 
-const port = 3000;
+
+
 
 var password = '1234';
 
@@ -60,4 +62,5 @@ app.get('/asistencia/profesor/:codAlumno/:conEquipo', function (require, respons
     consultEquipo(response, codigoAlumno,codigoEquipo);
 })
 
+const port = 3000;
 app.listen(port, () => console.log("nodeOracleRestApi app listening on port %s!", port))

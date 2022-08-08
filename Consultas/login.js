@@ -1,7 +1,8 @@
 const express = require('express');
 const oracledb = require('oracledb');
-
+const cors =require('cors');
 const app = express();
+app.use(cors());
 
 const port = 3000;
 
@@ -16,14 +17,14 @@ async function consultAuxiliaresd(response, id) {
             connectString: "localhost:1521/XE"
         });
         // run query to get employee with employee_id
-        resultAux = await connection.execute(`Select Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
-        from (select distinct E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
+        resultAux = await connection.execute(`Select Aux.Cargo, Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+        from (select distinct EC.idCargo Cargo, E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
         from empleado E, empleado_cargo EC, espacio ES
         where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='1') Aux
         where :id in Aux.Codigo`, [id]);
 
-        resultAdmin = await connection.execute(`Select Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
-        from (select distinct E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
+        resultAdmin = await connection.execute(`Select Aux.Cargo, Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+        from (select distinct EC.idCargo Cargo, E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
         from empleado E, empleado_cargo EC, espacio ES
         where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='3') Aux
         where :id in Aux.Codigo`, [id]);
