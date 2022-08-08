@@ -7,7 +7,7 @@ const port = 3000;
 
 var password = '1234';
 
-async function consultAuxiliaresd(response, nombreProfesor) {
+async function consultProfesor(response, nombreProfesor) {
 
     try {
         connection = await oracledb.getConnection({
@@ -98,7 +98,7 @@ app.get('/asistencia/profesor/:profe', function (require, response) {
         return
     }
 
-    consultAuxiliaresd(response, nombreProfesor);
+    consultProfesor(response, nombreProfesor);
 })
 
 app.listen(port, () => console.log("nodeOracleRestApi app listening on port %s!", port))
