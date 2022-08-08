@@ -1,8 +1,8 @@
 const express = require('express');
 const oracledb = require('oracledb');
-
+const cors =require('cors');
 const app = express();
-
+app.use(cors());
 const port = 3000;
 
 var password = '1234';
@@ -10,10 +10,11 @@ var password = '1234';
 async function consultPasantes(response, codigo) {
 
     try {
+        var crd = require('../credenciales.json');
         connection = await oracledb.getConnection({
-            user: "prueba",
-            password: password,
-            tns: "localhost:1521/XE"
+            user: crd.user,
+            password: crd.psswrd,
+            tns: crd.host+":"+crd.port+"/"+crd.db
         });
 
         resultPasante = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU NOMBRE, E.APELESTU APELLIDO, SE.NOMESPACIO SEDE, E.CORREOUDESTU CORREO, D.NOMDIA DIA, P.IDPERIODO PERIODO,  P.IDHORA HORAINI

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "babel-node": "babel-node --presets=@babel/preset-env",
+    "dev": "nodemon --exec npm run babel-node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,16 @@
   },
   "homepage": "https://github.com/Nkalcifer/ModuloDeportivoUD#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "oracledb": "^5.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.19"
   }
 }
