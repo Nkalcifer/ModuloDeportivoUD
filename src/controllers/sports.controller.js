@@ -121,7 +121,7 @@ const getasisDocente = async (req, res) => {
             res.send( 'El usuario ingresado no es profesor');
         } else if (resultProfesor.rows.length != 0 && resultClase.rows.length == 0) {
             //verifica que sea profesor y tenga clase
-            res.send([resultProfesor.rows[0], ['El profesor no tiene Clases en Este Momento']]);
+            res.send([resultProfesor.rows[0], 'El profesor no tiene Clases en Este Momento']);
         } else if (resultProfesor.rows.length != 0 && resultClase.rows.length != 0) {
             result = [resultProfesor.rows[0], resultClase.rows[0], resultElementos.rows];
             res.send(result);
