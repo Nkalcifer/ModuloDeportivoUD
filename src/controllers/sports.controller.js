@@ -62,9 +62,9 @@ const getRegorAdm = async (req, res) => {
             //query return zero employees
             return res.send('User not allowed');
         } else if (resultAux.rows.length > 0) {
-            res.send(resultAux.rows);
+            res.send(resultAux.rows[0]);
         } else {
-            res.send(resultAdm.rows);
+            res.send(resultAdm.rows[0]);
         }
     } catch (error) {
         res.status(500);
@@ -100,7 +100,7 @@ const getasisEquipo = async (req, res) => {
     try {
         const { codigo, equipo } = req.params;
         const connection = await getConnection();
-        const restulMEquipo = await connection.execute(`SELECT DISTINCT E.CONSEEQUIPO EQUIPO, ES.CODESTU CODIGO, ES.NOMESTU NOMBRE, ES.APELESTU APELLIDO, D.NOMDEPORTE DEPORTE, TO_CHAR(CURRENT_DATE, 'DD/MM/YYYY') FECHA, TO_CHAR(CURRENT_DATE, 'HH24:MI') HORA
+        const restulMEquipo = await connection.execute(`SELECT DISTINCT E.CONSEEQUIPO EQUIPO, ES.CODESTU CODIGO, ES.NOMESTU||' '||ES.APELESTU APELLIDO, D.NOMDEPORTE DEPORTE, ESP.NOMESPACIO, TO_CHAR(CURRENT_DATE, 'DD/MM/YYYY') FECHA, TO_CHAR(CURRENT_DATE, 'HH24:MI') HORA
                                                 FROM MIEMBROEQUIPO ME, EQUIPO E, ESTUDIANTE ES, DEPORTE D, ESPACIO_DEPORTE ED, ESPACIO ESP
                                                 WHERE ME.CONSEEQUIPO = E.CONSEEQUIPO
                                                 AND ME.CODESTU=ES.CODESTU
