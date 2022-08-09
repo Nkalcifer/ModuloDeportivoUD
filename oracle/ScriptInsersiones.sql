@@ -393,11 +393,11 @@ COMMIT;
     
 
 -- -- -- 3.2.1.1
--- Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
---                                             from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
---                                                 from empleado E, empleado_cargo EC, espacio ES
---                                                 where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
---                                             where UPPER(Prof.nomProf) = UPPER('Andres') AND UPPER(Prof.apellProf) =UPPER('Suarez');
+Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+                                            from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+                                                from empleado E, empleado_cargo EC, espacio ES
+                                                where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+                                            where UPPER(Prof.nomProf) = UPPER('Andrea') AND UPPER(Prof.apellProf) =UPPER('Sanchez');
 
 -- -- -- --- 3.2.1.2
 SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
@@ -410,7 +410,7 @@ AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA
 AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
 AND CURRENT_DATE>Res.FECHAINI 
 AND CURRENT_DATE<Res.FECHAFIN
-AND Res.CODEMPLEADO='2';
+AND Res.CODEMPLEADO='4';
 -- Elementos Activos para prestamos
 SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
 FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
