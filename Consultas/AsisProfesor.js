@@ -43,7 +43,7 @@ async function consultAuxiliaresd(response, nombreProfesor) {
             AND CURRENT_DATE<Res.FECHAFIN
             AND Res.CODEMPLEADO=:0`, [codProf]);
         
-            resultElementos = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, TE.DESCTIPOELEMENTO ELEMENTO
+        resultElementos = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, TE.DESCTIPOELEMENTO ELEMENTO
                     FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
                         FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
                         WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
