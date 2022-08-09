@@ -1,11 +1,10 @@
 const oracledb = require('oracledb');
-
-const crd = require('../credenciales.json');
+import config from "./../config";
 
 const connection = oracledb.getConnection({
-    user: crd.user,
-    password: crd.psswrd,
-    tns: crd.host + ":" + crd.port + "/" + crd.db
+    user: config.user,
+    password: config.password,
+    tns: config.host + ":" + config.port + "/" + config.database
 });
 
 const getConnection = () => {

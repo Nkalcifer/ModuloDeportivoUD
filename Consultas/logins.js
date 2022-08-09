@@ -33,8 +33,6 @@ async function consultAuxiliaresiD(req, res, id) {
     } finally {
         if (connection) {
             try {
-
-                // Always close connections
                 await connection.close();
             } catch (err) {
                 return console.error(err.message);

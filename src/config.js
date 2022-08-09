@@ -1,8 +1,11 @@
-import app from "./app";
+import {config} from "dotenv";
 
-const main = () => {
-    app.listen(app.get("port"));
-    console.log(`Server on port ${app.get("port")}`);
+config();
+
+export default{
+    user: process.env.USER || "",
+    password: process.env.PASSWORD || "",
+    host: process.env.HOST || "",
+    port: process.env.PORT || "",
+    database: process.env.DATABASE || ""
 };
-
-main();
