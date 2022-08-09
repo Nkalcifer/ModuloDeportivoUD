@@ -8,4 +8,5 @@ router.get("/login/:id", sportsController.getRegorAdm);
 router.get("/asisProfe/:nombreprofe", sportsController.getasisDocente);
 router.get("/asisEquipo/:codigo/:equipo", sportsController.getasisEquipo);
 router.get("/asisPasante/:codigo", sportsController.getasisPasante);
+router.get("/equipos", sportsController.getEquipos);
 export default router;

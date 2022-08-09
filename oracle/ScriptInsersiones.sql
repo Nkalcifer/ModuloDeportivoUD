@@ -504,7 +504,7 @@ AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/;
 -- select to_char(CURRENT_DATE, 'DAY', 'NLS_DATE_LANGUAGE=SPANISH')
 from dual
 
-
+SELECT CONSEEQUIPO EQUIPO FROM EQUIPO; 
 Select Aux.Cargo, Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'DD/MM/YYYY') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
     from (select distinct EC.idCargo Cargo, E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
         from empleado E, empleado_cargo EC, espacio ES
