@@ -504,3 +504,9 @@ COMMIT;
 -- select to_char(CURRENT_DATE, 'DAY', 'NLS_DATE_LANGUAGE=SPANISH')
 from dual
 
+
+Select Aux.Cargo, Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'DD/MM/YYYY') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+    from (select distinct EC.idCargo Cargo, E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
+        from empleado E, empleado_cargo EC, espacio ES
+        where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='1') Aux
+    where '63' in Aux.Codigo
