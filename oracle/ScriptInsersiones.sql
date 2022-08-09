@@ -391,56 +391,66 @@ COMMIT;
 --     from empleado E, empleado_cargo EC, espacio ES
 --     where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2';
     
---- 3.2.1.1
--- SELECT DISTINCT E.NOMEMPLEADO NOMBRE E.APELLEMPLEADO DOCENTE, 
--- FROM EMPLEADO E
--- WHERE UPPER(E.NOMEMPLEADO) = 'NEIDER'
--- AND UPPER(E.APELLEMPLEADO) = 'PUENTES';
 
 -- -- -- 3.2.1.1
 Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
                                             from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
                                                 from empleado E, empleado_cargo EC, espacio ES
                                                 where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
-                                            where UPPER(Prof.nomProf) =UPPER('Andres') AND UPPER(Prof.apellProf) =('Suarez');
-
-Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
-                                                from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
-                                                    from empleado E, empleado_cargo EC, espacio ES
-                                                    where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
-                                                where UPPER(Prof.nomProf)='Andres'  AND UPPER(Prof.apellProf)='suarez' 
+                                            where UPPER(Prof.nomProf) = UPPER('Andrea') AND UPPER(Prof.apellProf) =UPPER('Sanchez');
 
 -- -- -- --- 3.2.1.2
--- SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
--- FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
--- WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
--- AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
--- AND Pro.CODESPACIO=Esp.CODESPACIO 
--- AND Pro.IDDEPORTE=Dep.IDDEPORTE
--- AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
--- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
--- AND CURRENT_DATE>Res.FECHAINI 
--- AND CURRENT_DATE<Res.FECHAFIN
--- AND Res.CODEMPLEADO='2';
-
--- SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
--- FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
---     FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
---     WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
---     AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
---     AND Pro.CODESPACIO=Esp.CODESPACIO 
---     AND Pro.IDDEPORTE=Dep.IDDEPORTE
---     AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
---     AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
---     AND CURRENT_DATE>Res.FECHAINI 
---     AND CURRENT_DATE<Res.FECHAFIN
---     AND Res.CODEMPLEADO='2') CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
--- WHERE CURSO.SEDE in ED.CODESPACIO 
--- AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
--- AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
--- AND DTE.IDDEPORTE=D.IDDEPORTE 
--- AND CURSO.idDep=DTE.IDDEPORTE
--- AND E.IDESTADO=ED.IDESTADO;
+SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
+FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+AND Pro.CODESPACIO=Esp.CODESPACIO 
+AND Pro.IDDEPORTE=Dep.IDDEPORTE
+AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+AND CURRENT_DATE>Res.FECHAINI 
+AND CURRENT_DATE<Res.FECHAFIN
+AND Res.CODEMPLEADO='2';
+-- Elementos Activos para prestamos
+SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
+FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
+    FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+    AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+    AND Pro.CODESPACIO=Esp.CODESPACIO 
+    AND Pro.IDDEPORTE=Dep.IDDEPORTE
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+    AND CURRENT_DATE>Res.FECHAINI 
+    AND CURRENT_DATE<Res.FECHAFIN
+    AND Res.CODEMPLEADO='2') CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+WHERE CURSO.SEDE in ED.CODESPACIO 
+AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+AND DTE.IDDEPORTE=D.IDDEPORTE 
+AND CURSO.idDep=DTE.IDDEPORTE
+AND E.IDESTADO=ED.IDESTADO
+AND E.DESCESTADO='Activo';
+-- Elementos prestado
+SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
+FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
+    FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+    AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+    AND Pro.CODESPACIO=Esp.CODESPACIO 
+    AND Pro.IDDEPORTE=Dep.IDDEPORTE
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+    AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+    AND CURRENT_DATE>Res.FECHAINI 
+    AND CURRENT_DATE<Res.FECHAFIN
+    AND Res.CODEMPLEADO='2') CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+WHERE CURSO.SEDE in ED.CODESPACIO 
+AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+AND DTE.IDDEPORTE=D.IDDEPORTE 
+AND CURSO.idDep=DTE.IDDEPORTE
+AND E.IDESTADO=ED.IDESTADO
+AND E.DESCESTADO='Prestado';
 
 -- -- 3.2.1.4
 -- --Registro en la Asistencia
