@@ -177,11 +177,28 @@ const getasisPasante = async (req, res) => {
         res.send(error.message);
     }
 };
+
+const getEquipos = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.execute("SELECT CONSEEQUIPO EQUIPO FROM EQUIPO");
+        if (result.rows.length == 0) {
+            res.send('There´re not teams');
+        } else if (result.rows.length != 0) {
+            res.send(result.rows);
+        }
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
     getRegorAdm,
     getasisDocente,
     getasisEquipo,
-    getasisPasante
+    getasisPasante,
+    getEquipos
 };
