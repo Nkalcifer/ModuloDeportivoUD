@@ -98,7 +98,7 @@ const getasisDocente = async (req, res) => {
                                                     AND CURRENT_DATE<Res.FECHAFIN
                                                     AND Res.CODEMPLEADO=:0`, [codProf]);
 
-        const resultElementos = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, TE.DESCTIPOELEMENTO ELEMENTO
+        const resultElementosDisponibles = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, E.DESCESTADO ESTADO, TE.DESCTIPOELEMENTO ELEMENTO
                                                         FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
                                                             FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
                                                             WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
@@ -115,15 +115,35 @@ const getasisDocente = async (req, res) => {
                                                         AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
                                                         AND DTE.IDDEPORTE=D.IDDEPORTE 
                                                         AND CURSO.idDep=DTE.IDDEPORTE
-                                                        AND E.IDESTADO=ED.IDESTADO`, [codProf]);
-        console.log(resultProfesor, resultClase, resultElementos);
+                                                        AND E.IDESTADO=ED.IDESTADO
+                                                        AND E.DESCESTADO='Activo'`, [codProf]);
+        const resultElementosPrestados = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, E.DESCESTADO ESTADO,  TE.DESCTIPOELEMENTO ELEMENTO
+                                                        FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
+                                                            FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+                                                            WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+                                                            AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+                                                            AND Pro.CODESPACIO=Esp.CODESPACIO 
+                                                            AND Pro.IDDEPORTE=Dep.IDDEPORTE
+                                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+                                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+                                                            AND CURRENT_DATE>Res.FECHAINI 
+                                                            AND CURRENT_DATE<Res.FECHAFIN) CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+                                                        WHERE CURSO.SEDE in ED.CODESPACIO 
+                                                        AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+                                                        AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+                                                        AND DTE.IDDEPORTE=D.IDDEPORTE 
+                                                        AND CURSO.idDep=DTE.IDDEPORTE
+                                                        AND E.IDESTADO=ED.IDESTADO
+                                                        AND E.DESCESTADO='Prestado'`);
+
+        // console.log(resultProfesor, resultClase, resultElementosDisponibles, resultElementosPrestados);
         if (resultProfesor.rows.length == 0) {
-            res.send( 'El usuario ingresado no es profesor');
+            res.send('El usuario ingresado no es profesor');
         } else if (resultProfesor.rows.length != 0 && resultClase.rows.length == 0) {
             //verifica que sea profesor y tenga clase
             res.send([resultProfesor.rows[0], ['El profesor no tiene Clases en Este Momento']]);
         } else if (resultProfesor.rows.length != 0 && resultClase.rows.length != 0) {
-            result = [resultProfesor.rows[0], resultClase.rows[0], resultElementos.rows];
+            const result = [resultProfesor.rows[0], resultClase.rows[0], resultElementosDisponibles.rows, resultElementosPrestados.rows];
             res.send(result);
         }
     } catch (error) {
@@ -229,6 +249,15 @@ const getEquipos = async (req, res) => {
     }
 };
 
+const postasisProfe = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        res.send("Conexión Exitosa");
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
