@@ -398,11 +398,18 @@ COMMIT;
 -- AND UPPER(E.APELLEMPLEADO) = 'PUENTES';
 
 -- -- -- 3.2.1.1
--- Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
---                                             from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
---                                                 from empleado E, empleado_cargo EC, espacio ES
---                                                 where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
---                                             where UPPER(Prof.nomProf) ="Andres" AND UPPER(Prof.apellProf) ="Suarez";
+Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+                                            from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+                                                from empleado E, empleado_cargo EC, espacio ES
+                                                where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+                                            where UPPER(Prof.nomProf) =UPPER('Andres') AND UPPER(Prof.apellProf) =('Suarez');
+
+Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+                                                from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+                                                    from empleado E, empleado_cargo EC, espacio ES
+                                                    where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+                                                where UPPER(Prof.nomProf)='Andres'  AND UPPER(Prof.apellProf)='suarez' 
+
 -- -- -- --- 3.2.1.2
 -- SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
 -- FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
