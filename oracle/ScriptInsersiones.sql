@@ -398,12 +398,12 @@ COMMIT;
 -- AND UPPER(E.APELLEMPLEADO) = 'PUENTES';
 
 -- -- -- 3.2.1.1
--- -- Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
--- -- from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
--- --     from empleado E, empleado_cargo EC, espacio ES
--- --     where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
--- --  where 'ANDRES' = UPPER(Prof.nomProf) AND 'SUAREZ' =UPPER(Prof.apellProf);
--- -- --- 3.2.1.2
+-- Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+--                                             from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
+--                                                 from empleado E, empleado_cargo EC, espacio ES
+--                                                 where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
+--                                             where UPPER(Prof.nomProf) ="Andres" AND UPPER(Prof.apellProf) ="Suarez";
+-- -- -- --- 3.2.1.2
 -- SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
 -- FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
 -- WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
@@ -451,19 +451,19 @@ COMMIT;
 -- AND P.CODESPACIO=ES.CODESPACIO
 -- AND ES.ESP_CODESPACIO=SE.CODESPACIO;
 
--- SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
--- FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep, DIA D
--- WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA
--- AND Res.CODESTU='20182020101'
--- AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
--- AND Pro.CODESPACIO=Esp.CODESPACIO 
--- AND Pro.IDDEPORTE=Dep.IDDEPORTE
--- AND D.IDDIA=PRO.IDDIA
--- -- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(IDHORA,'HH24:MI')-(15/1440), 'HH24:MI') 
--- -- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
--- AND CURRENT_DATE>Res.FECHAINI
--- AND CURRENT_DATE<Res.FECHAFIN
--- AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/;
+SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
+FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep, DIA D
+WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA
+AND Res.CODESTU='20182020101'
+AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+AND Pro.CODESPACIO=Esp.CODESPACIO 
+AND Pro.IDDEPORTE=Dep.IDDEPORTE
+AND D.IDDIA=PRO.IDDIA
+-- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(IDHORA,'HH24:MI')-(15/1440), 'HH24:MI') 
+-- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
+AND CURRENT_DATE>Res.FECHAINI
+AND CURRENT_DATE<Res.FECHAFIN
+AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/;
 
 -- SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
 -- FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
