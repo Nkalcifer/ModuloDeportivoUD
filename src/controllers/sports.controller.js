@@ -79,16 +79,52 @@ const getasisDocente = async (req, res) => {
         var nombre = divisiones[0];
         var apellido = divisiones[1];
         const connection = await getConnection();
-        const result = await connection.execute(`Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
+        const resultProfesor = await connection.execute(`Select Prof.Codigo, Prof.nomProf, Prof.apellProf,Prof.sede, to_char(CURRENT_DATE, 'dd/mm/yyyy') fecha, to_char(CURRENT_DATE, 'HH:MI') Hora
                                             from (select distinct E.codEmpleado Codigo, E.nomEmpleado nomProf, E.apellEmpleado apellProf, ES.nomEspacio sede
                                                 from empleado E, empleado_cargo EC, espacio ES
                                                 where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='2') Prof
-                                            where UPPER(Prof.nomProf) =UPPER(:0) AND UPPER(Prof.apellProf) =UPPER(:1)`, [nombre, apellido]);
-        if (result.rows.length == 0) {
-            //query return zero employees
-            return res.send('Mr not Found');
-        } else {
-            return res.send(result.rows[0]);
+                                            where UPPER(Prof.nomProf) = UPPER( :0) AND UPPER(Prof.apellProf) =UPPER( :1)`, [nombre, apellido]);
+
+        var codProf = resultProfesor.rows[0][0];
+        const resultClase = await connection.execute(`SELECT Pro.CONSECPROGRA CURSO, Esp.nomEspacio ESPACIO, Dep.nomDeporte DEPORTE, Pro.noInscrito "Numero de Estudiantes"
+                                                    FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+                                                    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+                                                    AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+                                                    AND Pro.CODESPACIO=Esp.CODESPACIO 
+                                                    AND Pro.IDDEPORTE=Dep.IDDEPORTE
+                                                    AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+                                                    AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+                                                    AND CURRENT_DATE>Res.FECHAINI 
+                                                    AND CURRENT_DATE<Res.FECHAFIN
+                                                    AND Res.CODEMPLEADO=:0`, [codProf]);
+
+        const resultElementos = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, TE.DESCTIPOELEMENTO ELEMENTO
+                                                        FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
+                                                            FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+                                                            WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+                                                            AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+                                                            AND Pro.CODESPACIO=Esp.CODESPACIO 
+                                                            AND Pro.IDDEPORTE=Dep.IDDEPORTE
+                                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+                                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+                                                            AND CURRENT_DATE>Res.FECHAINI 
+                                                            AND CURRENT_DATE<Res.FECHAFIN
+                                                            AND Res.CODEMPLEADO=:0 ) CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+                                                        WHERE CURSO.SEDE in ED.CODESPACIO 
+                                                        AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+                                                        AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+                                                        AND DTE.IDDEPORTE=D.IDDEPORTE 
+                                                        AND CURSO.idDep=DTE.IDDEPORTE
+                                                        AND E.IDESTADO=ED.IDESTADO`, [codProf]);
+        console.log(resultProfesor, resultClase, resultElementos);
+        if (resultProfesor.rows.length == 0) {
+            res.send( 'El usuario ingresado no es profesor');
+        } else if (resultProfesor.rows.length != 0 && resultClase.rows.length == 0) {
+            //verifica que sea profesor y tenga clase
+            res.send([resultProfesor.rows[0], ['El profesor no tiene Clases en Este Momento']]);
+        } else if (resultProfesor.rows.length != 0 && resultClase.rows.length != 0) {
+            result = [resultProfesor.rows[0], resultClase.rows[0], resultElementos.rows];
+            res.send(result);
         }
     } catch (error) {
         res.status(500);
