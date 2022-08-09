@@ -234,6 +234,7 @@ const getasisPasante = async (req, res) => {
     }
 };
 
+
 const getEquipos = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -244,14 +245,16 @@ const getEquipos = async (req, res) => {
             res.send(result.rows);
         }
     } catch (error) {
-        res.status(500);
+        res.status(500);w
         res.send(error.message);
     }
 };
 
 const postasisProfe = async (req, res) => {
     try {
+        
         const connection = await getConnection();
+        const max= await connection.execute("SELECT MAX(CONSECASISRES) FROM ASISTIRRESPONSABLE");
         res.send("Conexión Exitosa");
     } catch (error) {
         res.status(500);
