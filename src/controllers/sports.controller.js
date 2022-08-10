@@ -179,6 +179,7 @@ const getasisEquipo = async (req, res) => {
 const getasisPasante = async (req, res) => {
     try {
         const { codigo } = req.params;
+        console.log(codigo);
         const connection = await getConnection();
         const resultPasante = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU NOMBRE, E.APELESTU APELLIDO, SE.NOMESPACIO SEDE, E.CORREOUDESTU CORREO, D.NOMDIA DIA, P.IDPERIODO PERIODO,  P.IDHORA HORAINI
                                                     FROM ESTUDIANTE E, RESPONSABLE R, DIA D, PROGRAMACION P, ESPACIO ES, ESPACIO SE
@@ -223,7 +224,7 @@ const getasisPasante = async (req, res) => {
         if (resultPasante.rows.length == 0) {
             res.send('User isn`t intern');
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length == 0) {
-            res.send('Itern has not PL ');
+            res.send([[resultPasante.rows[0]], ['Pasante no tiene Practica Libre Asiganada']]);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length != 0) {
             const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows];
             return response.send(result);
@@ -233,7 +234,6 @@ const getasisPasante = async (req, res) => {
         res.send(error.message);
     }
 };
-
 
 const getEquipos = async (req, res) => {
     try {
@@ -275,7 +275,7 @@ const postasisProfe = async (req, res) => {
 
         // console.log(typeof (insertAsis));
 
-        res.send(res.send([CONSECASISRES]));
+        res.send([CONSECASISRES]);
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -315,6 +315,47 @@ const postasisPasante = async (req, res) => {
 };
 
 const postPrestamo = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const { id } = req.body;
+        var i = 0;
+        const consult = id[0];
+        console.log(consult);
+        const DATA = await connection.execute(`SELECT CONSECPROGRA, CONSECRES
+                                            FROM ASISTIRRESPONSABLE
+                                            WHERE CONSECASISRES= :0`, [consult]);
+        const CONSECPROGRA = DATA.rows[0][0];
+        const CONSECRES = DATA.rows[0][1];
+        const CONSECASISRES = consult;
+        for (var j = 1; j < id.length; j++) {
+            var max = await connection.execute('SELECT MAX(CONSECPRESTAMO) FROM PRESTAMO');
+            if (isNaN(max.rows[0])) {
+                i = 0;
+            } else {
+                i = Number(max.rows[0]);
+            }
+            var CONSECPRESTAMO = i + 1;
+            var CONSECELEMENTO = id[j];
+            var insertAsis = await connection.execute(`INSERT INTO PRESTAMO 
+                                                (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
+                                                VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
+            var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
+            
+        }
+
+        const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
+                                        FROM ELEMENTODEPORTIVO ED, ESTADO ES, TIPOELEMENTO TE
+                                        WHERE ED.IDESTADO = ES.IDESTADO
+                                        AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
+                                        AND ES.IDESTADO = :0`, ['2']);
+        res.send(elementos.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+const postPrestamoPasante = async (req, res) => {
     try {
         const connection = await getConnection();
         const { id } = req.body;
@@ -364,5 +405,6 @@ export const methods = {
     getEquipos,
     postasisProfe,
     postasisPasante,
-    postPrestamo
+    postPrestamo,
+    postPrestamoPasante
 };
