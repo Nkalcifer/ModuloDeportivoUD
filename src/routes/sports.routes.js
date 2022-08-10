@@ -17,4 +17,5 @@ router.post("/asisEquipo", sportsController.postEquipo);
 router.get("/sedes", sportsController.getSedes);
 router.get("/periodos", sportsController.getPeriodos);
 router.get("/horasPas", sportsController.gethoraPas);
+router.get("/horasEquip", sportsController.gethoraEquip);
 export default router;

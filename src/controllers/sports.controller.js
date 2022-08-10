@@ -474,11 +474,35 @@ const getPeriodos = async (req, res) => {
 const gethoraPas = async (req, res) => {
     try {
         const connection = await getConnection();
-        const per = await connection.execute(`SELECT E.NOMESTU|| ' ' ||E.APELESTU "NOMBRE PASANTE", COUNT(AR.CONSECPROGRA)*2 HORAS
-                                        FROM ASISTIRRESPONSABLE AR, RESPONSABLE R, ESTUDIANTE E
-                                        WHERE AR.CONSECRES=R.CONSECRES
-                                        AND E.CODESTU=R.CODESTU
-                                        GROUP BY E.NOMESTU, E.APELESTU`);
+        const per = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU||' '||E.APELESTU NOMBRES, ES.NOMESPACIO SEDE, P.IDPERIODO PERIODO, COUNT(E.NOMESTU)*2 HORAS
+                                            FROM ESTUDIANTE E, ESPACIO ES, RESPONSABLE RES, PROGRAMACION PR, PERIODO P, (SELECT E.NOMESTU NOMBRE, AR.CONSECPROGRA HORAS
+                                            FROM ASISTIRRESPONSABLE AR, RESPONSABLE R, ESTUDIANTE E
+                                            WHERE AR.CONSECRES=R.CONSECRES
+                                            AND E.CODESTU=R.CODESTU) HORAS
+                                            WHERE E.CODESPACIO = ES.CODESPACIO
+                                            AND E.CODESTU=RES.CODESTU
+                                            AND RES.CONSECPROGRA = PR.CONSECPROGRA
+                                            AND PR.IDPERIODO=P.IDPERIODO
+                                            AND HORAS.NOMBRE=E.NOMESTU
+                                            GROUP BY E.CODESTU, E.NOMESTU, E.APELESTU, ES.NOMESPACIO, P.IDPERIODO`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+const gethoraEquip = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU||' '||E.APELESTU NOMBRES, ES.NOMESPACIO SEDE, P.IDPERIODO PERIODO, COUNT(E.NOMESTU)*2 HORAS
+                                    FROM ESTUDIANTE E, ESPACIO ES, MIEMBROEQUIPO ME, ASISMIEMBROEQUIPO AME, PROGRAMACION PR, PERIODO P
+                                    WHERE E.CODESPACIO=ES.CODESPACIO
+                                    AND ME.CODESTU=E.CODESTU
+                                    AND ME.ITEMMIEMBRO=AME.ITEMMIEMBRO
+                                    AND AME.CONSECPROGRA=PR.CONSECPROGRA
+                                    AND PR.IDPERIODO=P.IDPERIODO
+                                    GROUP BY E.CODESTU, E.NOMESTU, E.APELESTU, ES.NOMESPACIO, P.IDPERIODO`);
         res.send(per.rows);
     } catch (error) {
         res.status(500);
@@ -501,5 +525,6 @@ export const methods = {
     postEquipo, 
     getSedes,
     getPeriodos,
-    gethoraPas
+    gethoraPas,
+    gethoraEquip
 };
