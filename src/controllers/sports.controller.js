@@ -318,7 +318,6 @@ const postPrestamo = async (req, res) => {
     try {
         const connection = await getConnection();
         const { id } = req.body;
-        console.log(id);
         var i = 0;
         const consult = id[0];
         const DATA = await connection.execute(`SELECT CONSECPROGRA, CONSECRES
@@ -339,12 +338,15 @@ const postPrestamo = async (req, res) => {
             var insertAsis = connection.execute(`INSERT INTO PRESTAMO 
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
-            console.log(insertAsis);
+            var updateState = connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
+            
         }
 
-
-
-        res.send("Gracias");
+        // var elementos = connection.execute(`SELECT ED.CONSECELEMENTO ID, ES.DESCESTADO
+        //                                 FROM ELEMENTODEPORTIVO ED, ESTADO ES
+        //                                 WHERE ED.IDESTADO = ES.IDESTADO
+        //                                 AND ES.IDESTADO = '2'`);
+        res.send("json(elementos)");
     } catch (error) {
         res.status(500);
         res.send(error.message);
