@@ -471,7 +471,6 @@ const getPeriodos = async (req, res) => {
     }
 };
 
-
 const gethoraPas = async (req, res) => {
     try {
         const connection = await getConnection();
