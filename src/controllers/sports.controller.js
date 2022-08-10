@@ -202,7 +202,7 @@ const getasisPasante = async (req, res) => {
                                                         -- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
                                                         AND CURRENT_DATE>Res.FECHAINI
                                                         AND CURRENT_DATE<Res.FECHAFIN
-                                                        -- AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/ `, [codigo]);
+                                                        AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/`, [codigo]);
         const resultElementos = await connection.execute(`SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
                                                 FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
                                                     FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
@@ -348,7 +348,8 @@ const postPrestamo = async (req, res) => {
                                         WHERE ED.IDESTADO = ES.IDESTADO
                                         AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
                                         AND ES.IDESTADO = :0`, ['2']);
-        res.send(elementos.rows);
+        return res.send(elementos.rows);
+
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -395,6 +396,57 @@ const postPrestamoPasante = async (req, res) => {
     }
 };
 
+const postEquipo = async (req, res) => {
+    try {
+        const { codigo, equipo } = req.body;
+        var i = 0;
+        const connection = await getConnection();
+        const result = await connection.execute(`SELECT DISTINCT E.CONSEEQUIPO EQUIPO, ES.CODESTU CODIGO, ES.NOMESTU NOMBRE, ES.APELESTU APELLIDO, D.NOMDEPORTE DEPORTE, CURRENT_DATE FECHA, TO_CHAR(CURRENT_DATE, 'HH24:MI') HORA
+                                        FROM MIEMBROEQUIPO ME, EQUIPO E, ESTUDIANTE ES, DEPORTE D, ESPACIO_DEPORTE ED, ESPACIO ESP
+                                        WHERE ME.CONSEEQUIPO = E.CONSEEQUIPO
+                                        AND ME.CODESTU=ES.CODESTU
+                                        AND ME.CODESTU= :0
+                                        AND D.IDDEPORTE=E.IDDEPORTE
+                                        AND ME.CONSEEQUIPO= :1
+                                        AND ED.CODESPACIO = ESP.CODESPACIO`, [codigo, equipo]);
+        const resultI = await connection.execute(`SELECT ME.CONSEEQUIPO, ME.ITEMMIEMBRO
+                                        FROM EQUIPO E, MIEMBROEQUIPO ME
+                                        WHERE E.CONSEEQUIPO = ME.CONSEEQUIPO
+                                        AND ME.CODESTU= :0
+                                        AND ME.CONSEEQUIPO= :1`, [codigo, equipo]);
+        const cond = await connection.execute(`SELECT CONSECPROGRA
+                                            FROM PROGRAMACION P
+                                            WHERE IDACTIVIDAD = 'EN'
+                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(P.IDHORA,'HH24:MI'), 'HH24:MI')
+                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(P.HOR_IDHORA,'HH24:MI'), 'HH24:MI')`);
+        const max = await connection.execute(`SELECT MAX(CONMIEMBROEQUIPO) FROM ASISMIEMBROEQUIPO`);
+        if (isNaN(max.rows[0])) {
+            i = 0;
+        } else {
+            i = Number(max.rows[0]);
+        }
+        var CONMIEMBROEQUIPO = i + 1;
+        if (cond.rows.length == 0) {
+            return res.send("Fuera de Horario Para Registrar Asistencia");
+        } else if (resultI.rows.length == 0) {
+            return res.send("El estudiante No pertenece a Este Equipo, o no Esta Registrado")
+        } else {
+            var CONSECPROGRA = cond.rows[0][0];
+            var CONSEEQUIPO = resultI.rows[0][0];
+            var ITEMMIEMBRO = resultI.rows[0][1];
+            console.log(result.rows);
+            const asis = await connection.execute(`INSERT INTO ASISMIEMBROEQUIPO 
+                                                (CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO) 
+                                                VALUES (:0, :1, :2, :3)`, [CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO], { autoCommit: true });
+            console.log(CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO);
+        }
+
+        res.send("Asistencia Registrada");
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
@@ -406,5 +458,6 @@ export const methods = {
     postasisProfe,
     postasisPasante,
     postPrestamo,
-    postPrestamoPasante
+    postPrestamoPasante,
+    postEquipo
 };
