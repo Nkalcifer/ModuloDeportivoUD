@@ -12,5 +12,6 @@ router.get("/equipos", sportsController.getEquipos);
 router.post("/checkProfe", sportsController.postasisProfe);
 router.post("/checkPas", sportsController.postasisPasante);
 router.post("/prestar", sportsController.postPrestamo);
-router.post("/prestar/pasante", sportsController.postPrestamoPasante)
+router.post("/prestar/pasante", sportsController.postPrestamoPasante);
+router.post("/asisEquipo", sportsController.postEquipo);
 export default router;
