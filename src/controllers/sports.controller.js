@@ -447,6 +447,70 @@ const postEquipo = async (req, res) => {
         res.send(error.message);
     }
 };
+
+const getSedes = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const sed = await connection.execute(`SELECT CODESPACIO, NOMESPACIO
+                                        FROM ESPACIO
+                                        WHERE IDTIPOESPACIO = '9'`);
+        res.send(sed.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+const getPeriodos = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT IDPERIODO
+                                            FROM PERIODO`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+const gethoraPas = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU||' '||E.APELESTU NOMBRES, ES.NOMESPACIO SEDE, P.IDPERIODO PERIODO, COUNT(E.NOMESTU)*2 HORAS
+                                            FROM ESTUDIANTE E, ESPACIO ES, RESPONSABLE RES, PROGRAMACION PR, PERIODO P, (SELECT E.NOMESTU NOMBRE, AR.CONSECPROGRA HORAS
+                                            FROM ASISTIRRESPONSABLE AR, RESPONSABLE R, ESTUDIANTE E
+                                            WHERE AR.CONSECRES=R.CONSECRES
+                                            AND E.CODESTU=R.CODESTU) HORAS
+                                            WHERE E.CODESPACIO = ES.CODESPACIO
+                                            AND E.CODESTU=RES.CODESTU
+                                            AND RES.CONSECPROGRA = PR.CONSECPROGRA
+                                            AND PR.IDPERIODO=P.IDPERIODO
+                                            AND HORAS.NOMBRE=E.NOMESTU
+                                            GROUP BY E.CODESTU, E.NOMESTU, E.APELESTU, ES.NOMESPACIO, P.IDPERIODO`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+const gethoraEquip = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT E.CODESTU CODIGO, E.NOMESTU||' '||E.APELESTU NOMBRES, ES.NOMESPACIO SEDE, P.IDPERIODO PERIODO, COUNT(E.NOMESTU)*2 HORAS
+                                    FROM ESTUDIANTE E, ESPACIO ES, MIEMBROEQUIPO ME, ASISMIEMBROEQUIPO AME, PROGRAMACION PR, PERIODO P
+                                    WHERE E.CODESPACIO=ES.CODESPACIO
+                                    AND ME.CODESTU=E.CODESTU
+                                    AND ME.ITEMMIEMBRO=AME.ITEMMIEMBRO
+                                    AND AME.CONSECPROGRA=PR.CONSECPROGRA
+                                    AND PR.IDPERIODO=P.IDPERIODO
+                                    GROUP BY E.CODESTU, E.NOMESTU, E.APELESTU, ES.NOMESPACIO, P.IDPERIODO`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
@@ -459,5 +523,9 @@ export const methods = {
     postasisPasante,
     postPrestamo,
     postPrestamoPasante,
-    postEquipo
+    postEquipo, 
+    getSedes,
+    getPeriodos,
+    gethoraPas,
+    gethoraEquip
 };
