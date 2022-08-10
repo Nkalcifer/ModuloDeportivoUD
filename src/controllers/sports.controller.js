@@ -275,7 +275,7 @@ const postasisProfe = async (req, res) => {
 
         // console.log(typeof (insertAsis));
 
-        res.send(res.send([CONSECASISRES]));
+        res.send([CONSECASISRES]);
     } catch (error) {
         res.status(500);
         res.send(error.message);
