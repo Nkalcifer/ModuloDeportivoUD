@@ -527,3 +527,16 @@ Select Aux.Cargo, Aux.nomAuxiliar, Aux.sede, to_char(CURRENT_DATE, 'DD/MM/YYYY')
         from empleado E, empleado_cargo EC, espacio ES
         where E.codEmpleado = EC.codEmpleado and ES.codEspacio= EC.codEspacio and EC.idCargo='1') Aux
     where '63' in Aux.Codigo
+
+
+
+    -- inserts 
+
+    INSERT INTO ASISTIRRESPONSABLE 
+    (CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES, HORAASISRES) 
+    VALUES (2, '13', '6', '09/08/2022', CURRENT_DATE);
+
+    SELECT CONSECRES cres
+    FROM RESPONSABLE 
+    WHERE CODEMPLEADO= '2' 
+    AND CONSECPROGRA= '13';

@@ -238,24 +238,44 @@ const getasisPasante = async (req, res) => {
 const getEquipos = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.execute("SELECT CONSEEQUIPO EQUIPO FROM EQUIPO");
+        const result = await connection.execute('SELECT CONSEEQUIPO EQUIPO FROM EQUIPO');
         if (result.rows.length == 0) {
             res.send('There´re not teams');
         } else if (result.rows.length != 0) {
             res.send(result.rows);
         }
     } catch (error) {
-        res.status(500);w
+        res.status(500); w
         res.send(error.message);
     }
 };
 
 const postasisProfe = async (req, res) => {
     try {
-        
         const connection = await getConnection();
-        const max= await connection.execute("SELECT MAX(CONSECASISRES) FROM ASISTIRRESPONSABLE");
-        res.send("Conexión Exitosa");
+        const { CONSECPROGRA, ID, FECHAASISRES } = req.body;
+        var i = 0;
+        var CONSECRES = 0;
+        const max = await connection.execute('SELECT MAX(CONSECASISRES) FROM ASISTIRRESPONSABLE');
+        // console.log(max);
+        const CRES = await connection.execute(`SELECT CONSECRES cres
+                                            FROM RESPONSABLE 
+                                            WHERE CODEMPLEADO = :0 
+                                            AND CONSECPROGRA = :1 `, [ID, CONSECPROGRA]);
+        CONSECRES = String(CRES.rows[0]);
+        if (isNaN(max.rows[0])) {
+            i = 0;
+        } else {
+            i = Number(max.rows[0]);
+        }
+        const CONSECASISRES = i + 1;
+        const regAsistencia = { CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES};
+        console.log(regAsistencia);
+        const insertAsis = connection.execute(`INSERT INTO ASISTIRRESPONSABLE (CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES, HORAASISRES) VALUES ( :0 , :1, :2, :3, CURRENT_DATE)`, [CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES], { autoCommit: true });
+
+        console.log(typeof (insertAsis));
+
+        res.send("Gracias");
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -268,5 +288,6 @@ export const methods = {
     getasisDocente,
     getasisEquipo,
     getasisPasante,
-    getEquipos
+    getEquipos,
+    postasisProfe
 };
