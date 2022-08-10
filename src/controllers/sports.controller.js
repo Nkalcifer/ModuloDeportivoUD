@@ -202,7 +202,7 @@ const getasisPasante = async (req, res) => {
                                                         -- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
                                                         AND CURRENT_DATE>Res.FECHAINI
                                                         AND CURRENT_DATE<Res.FECHAFIN
-                                                        AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/`, [codigo]);
+                                                        -- AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/`, [codigo]);
         const resultElementos = await connection.execute(`SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
                                                 FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
                                                     FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
@@ -227,7 +227,7 @@ const getasisPasante = async (req, res) => {
             res.send([[resultPasante.rows[0]], ['Pasante no tiene Practica Libre Asiganada']]);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length != 0) {
             const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows];
-            return response.send(result);
+            return res.send(result);
         }
     } catch (error) {
         res.status(500);
@@ -348,7 +348,7 @@ const postPrestamo = async (req, res) => {
                                         WHERE ED.IDESTADO = ES.IDESTADO
                                         AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
                                         AND ES.IDESTADO = :0`, ['2']);
-                                        return res.send(elementos.rows);
+        return res.send(elementos.rows);
     } catch (error) {
         res.status(500);
         return res.send(error.message);
@@ -446,6 +446,47 @@ const postEquipo = async (req, res) => {
         res.send(error.message);
     }
 };
+
+const getSedes = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const sed = await connection.execute(`SELECT CODESPACIO, NOMESPACIO
+                                        FROM ESPACIO
+                                        WHERE IDTIPOESPACIO = '9'`);
+        res.send(sed.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+const getPeriodos = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT IDPERIODO
+                                            FROM PERIODO`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+
+const gethoraPas = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const per = await connection.execute(`SELECT E.NOMESTU|| ' ' ||E.APELESTU "NOMBRE PASANTE", COUNT(AR.CONSECPROGRA)*2 HORAS
+                                        FROM ASISTIRRESPONSABLE AR, RESPONSABLE R, ESTUDIANTE E
+                                        WHERE AR.CONSECRES=R.CONSECRES
+                                        AND E.CODESTU=R.CODESTU
+                                        GROUP BY E.NOMESTU, E.APELESTU`);
+        res.send(per.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
@@ -458,5 +499,8 @@ export const methods = {
     postasisPasante,
     postPrestamo,
     postPrestamoPasante,
-    postEquipo
+    postEquipo, 
+    getSedes,
+    getPeriodos,
+    gethoraPas
 };
