@@ -269,18 +269,91 @@ const postasisProfe = async (req, res) => {
             i = Number(max.rows[0]);
         }
         const CONSECASISRES = i + 1;
-        const regAsistencia = { CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES};
-        console.log(regAsistencia);
+        const regAsistencia = { CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES };
+        // console.log(regAsistencia);
         const insertAsis = connection.execute(`INSERT INTO ASISTIRRESPONSABLE (CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES, HORAASISRES) VALUES ( :0 , :1, :2, :3, CURRENT_DATE)`, [CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES], { autoCommit: true });
 
-        console.log(typeof (insertAsis));
+        // console.log(typeof (insertAsis));
 
-        res.send("Gracias");
+        res.send(res.send([CONSECASISRES]));
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
 };
+
+const postasisPasante = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const { CONSECPROGRA, ID, FECHAASISRES } = req.body;
+        var i = 0;
+        var CONSECRES = 0;
+        const max = await connection.execute('SELECT MAX(CONSECASISRES) FROM ASISTIRRESPONSABLE');
+        // console.log(max);
+        const CRES = await connection.execute(`SELECT CONSECRES cres
+                                            FROM RESPONSABLE 
+                                            WHERE CODESTU = :0 
+                                            AND CONSECPROGRA = :1 `, [ID, CONSECPROGRA]);
+        CONSECRES = String(CRES.rows[0]);
+        if (isNaN(max.rows[0])) {
+            i = 0;
+        } else {
+            i = Number(max.rows[0]);
+        }
+        const CONSECASISRES = i + 1;
+        const regAsistencia = { CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES };
+        // console.log(regAsistencia);
+        const insertAsis = connection.execute(`INSERT INTO ASISTIRRESPONSABLE (CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES, HORAASISRES) VALUES ( :0 , :1, :2, :3, CURRENT_DATE)`, [CONSECASISRES, CONSECPROGRA, CONSECRES, FECHAASISRES], { autoCommit: true });
+
+        // console.log(typeof (insertAsis));
+
+        res.send([CONSECASISRES]);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
+const postPrestamo = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const { id } = req.body;
+        var i = 0;
+        const consult = id[0];
+        const DATA = await connection.execute(`SELECT CONSECPROGRA, CONSECRES
+                                            FROM ASISTIRRESPONSABLE
+                                            WHERE CONSECASISRES= :0`, [consult]);
+        const CONSECPROGRA = DATA.rows[0][0];
+        const CONSECRES = DATA.rows[0][1];
+        const CONSECASISRES = consult;
+        for (var j = 1; j < id.length; j++) {
+            var max = await connection.execute('SELECT MAX(CONSECPRESTAMO) FROM PRESTAMO');
+            if (isNaN(max.rows[0])) {
+                i = 0;
+            } else {
+                i = Number(max.rows[0]);
+            }
+            var CONSECPRESTAMO = i + 1;
+            var CONSECELEMENTO = id[j];
+            var insertAsis = await connection.execute(`INSERT INTO PRESTAMO 
+                                                (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
+                                                VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
+            var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
+            
+        }
+
+        const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
+                                        FROM ELEMENTODEPORTIVO ED, ESTADO ES, TIPOELEMENTO TE
+                                        WHERE ED.IDESTADO = ES.IDESTADO
+                                        AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
+                                        AND ES.IDESTADO = :0`, ['2']);
+        res.send(elementos.rows);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+};
+
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
@@ -289,5 +362,7 @@ export const methods = {
     getasisEquipo,
     getasisPasante,
     getEquipos,
-    postasisProfe
+    postasisProfe,
+    postasisPasante,
+    postPrestamo
 };

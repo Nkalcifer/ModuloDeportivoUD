@@ -10,4 +10,5 @@ router.get("/asisEquipo/:codigo/:equipo", sportsController.getasisEquipo);
 router.get("/asisPasante/:codigo", sportsController.getasisPasante);
 router.get("/equipos", sportsController.getEquipos);
 router.post("/checkProfe", sportsController.postasisProfe);
+router.post("/prestar", sportsController.postPrestamo);
 export default router;
