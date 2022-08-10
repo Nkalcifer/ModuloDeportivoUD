@@ -221,12 +221,30 @@ const getasisPasante = async (req, res) => {
                                                 AND DTE.IDDEPORTE=D.IDDEPORTE 
                                                 AND CURSO.idDep=DTE.IDDEPORTE
                                                 AND E.IDESTADO=ED.IDESTADO`, [codigo]);
+        const resultElementosPrestados = await connection.execute(`SELECT DISTINCT ED.CONSECELEMENTO CODE, E.DESCESTADO ESTADO,  TE.DESCTIPOELEMENTO ELEMENTO
+                                                FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
+                                                    FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
+                                                    WHERE Res.CONSECPROGRA=Pro.CONSECPROGRA 
+                                                    AND Pro.IDACTIVIDAD=Act.IDACTIVIDAD 
+                                                    AND Pro.CODESPACIO=Esp.CODESPACIO 
+                                                    AND Pro.IDDEPORTE=Dep.IDDEPORTE
+                                                    AND TO_CHAR(CURRENT_DATE, 'HH24:MI')>Pro.IDHORA 
+                                                    AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < Pro.HOR_IDHORA
+                                                    AND CURRENT_DATE>Res.FECHAINI 
+                                                    AND CURRENT_DATE<Res.FECHAFIN) CURSO, ElementoDeportivo ED, TipoElemento TE, DEPORTE_TIPOELEMENTO DTE, DEPORTE D, ESTADO E
+                                                WHERE CURSO.SEDE in ED.CODESPACIO 
+                                                AND ED.IDTIPOELEMENTO=TE.IDTIPOELEMENTO 
+                                                AND TE.IDTIPOELEMENTO=DTE.IDTIPOELEMENTO 
+                                                AND DTE.IDDEPORTE=D.IDDEPORTE 
+                                                AND CURSO.idDep=DTE.IDDEPORTE
+                                                AND E.IDESTADO=ED.IDESTADO
+                                                AND E.DESCESTADO='Prestado'`);
         if (resultPasante.rows.length == 0) {
             res.send(['User isn`t intern']);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length == 0) {
-            res.send([resultPasante.rows[0], 'Pasante no tiene Practica Libre Asiganada']);
+            res.send([resultPasante.rows[0], 'Ya paso el tiempo de la Practica Libre Asiganada']);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length != 0) {
-            const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows];
+            const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows, resultElementosPrestados.rows];
             return res.send(result);
         }
     } catch (error) {
@@ -340,7 +358,7 @@ const postPrestamo = async (req, res) => {
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
             var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
-            
+
         }
 
         const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
@@ -381,7 +399,7 @@ const postPrestamoPasante = async (req, res) => {
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
             var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
-            
+
         }
 
         const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
@@ -523,7 +541,7 @@ export const methods = {
     postasisPasante,
     postPrestamo,
     postPrestamoPasante,
-    postEquipo, 
+    postEquipo,
     getSedes,
     getPeriodos,
     gethoraPas,

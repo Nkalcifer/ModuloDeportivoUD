@@ -262,7 +262,9 @@ INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('8', 'Marcela', 'Rey', CURRENT_DATE, 'mreys@.udistritaledu.co');
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('9', 'Alejandro', 'Abondano', CURRENT_DATE, 'jperezz@udistrital.edu.co');
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('10', 'Alexander', 'Carvajal', CURRENT_DATE, 'acarvajalm@udistrital.edu.co');
-
+INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (8, '8', '6', '11', CURRENT_DATE);
+INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (9, '9', '6', '12', CURRENT_DATE);
+INSERT INTO Empleado_Cargo (consec, codEmpleado, idCargo, codEspacio, fechaCargo) VALUES (10, '10', '6', '12', CURRENT_DATE);
 -- Docente para Pasantes
 INSERT INTO Empleado (codEmpleado, nomEmpleado, apellEmpleado, fechaRegistro, correoUd) VALUES ('999', 'LIBRE', 'PASANTE', CURRENT_DATE, 'correo.udistrital.edu.co');
 SELECT COUNT(CODEMPLEADO) FROM Empleado;
@@ -294,6 +296,8 @@ INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, co
 INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20182020101, 12, 'Juanito', 'Pasante', CURRENT_DATE, 'jpasante@udistrital.edu.co', TO_DATE('1997/03/15', 'YYYY/MM/DD'));
 SELECT COUNT(CODESTU) FROM Estudiante;
 
+INSERT INTO Estudiante (codEstu, codEspacio, nomEstu, apelEstu, fechaRegEstu, correoUdEstu, fechaNacEstu) VALUES (20182020102, 12, 'Juanita', 'Pasasnte', CURRENT_DATE, 'juanitate@udistrital.edu.co', TO_DATE('1999/03/15', 'YYYY/MM/DD'));
+
 -- Incluir registros para la programación: 
 -- 4registros  de cursos
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (1, '20221', 'CU', '1', '08:00', '10:00', '17', '1', 15, 9);
@@ -315,6 +319,8 @@ INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*H
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (13, '20221', 'CU', '1', '00:00', '23:00', '23', '10', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (14, '20221', 'PR', '1', '00:00', '23:00', '21', '4', 15, 9);
 INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (15, '20221', 'EN', '4', '00:00', '23:00', '22', '4', 15, 9);
+
+INSERT INTO Programacion (CONSECPROGRA, IDPERIODO, IDACTIVIDAD, IDDIA, IDHORA/*Hora inicio */, HOR_IDHORA/*Hora fin */, CODESPACIO, IDDEPORTE, CUPO, NOINSCRITO) VALUES (16, '20221', 'PR', '1', '09:00', '10:00', '21', '4', 15, 9);
 
 SELECT COUNT(CONSECPROGRA) FROM Programacion;
 -- Incluir 10 registros en la tabla espacio-deporte
@@ -382,7 +388,9 @@ INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFI
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (4, 4, '5', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (5, 5, '8', '24/05/2022', '24/11/2022');
 INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (6, 13, '2', '24/05/2022', '24/11/2022');
-INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODESTU, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (7, 14, '20182020101','999', '24/05/2022', '24/11/2022');
+INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODESTU, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (7, 14, '20182020102','999', '24/05/2022', '24/11/2022');
+INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (9, 6, '2', '24/05/2022', '24/11/2022');
+INSERT INTO responsable (CONSECRES, CONSECPROGRA, CODESTU, CODEMPLEADO, FECHAINI, FECHAFIN) VALUES (8, 16, '20182020102','999', '24/05/2022', '24/11/2022');
 COMMIT;
 -- Select Aux.nomAuxiliar, Aux.sede, CURRENT_DATE fecha
 -- from (select distinct E.codEmpleado Codigo, E.nomEmpleado||' '||E.apellEmpleado nomAuxiliar, ES.nomEspacio sede
@@ -575,7 +583,7 @@ COMMIT;
 -- AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
 -- AND ES.IDESTADO = '2';
 -- delete from asistirresponsable where CONSECPROGRA='13';
--- UPDATE Programacion SET IDHORA='00:00', HOR_IDHORA='23:00' WHERE CONSECPROGRA='14';
+-- UPDATE Programacion SET IDHORA='10:00', HOR_IDHORA='12:00' WHERE CONSECPROGRA='16';
 
 -- SELECT DISTINCT ES.CODESTU CODIGO, E.CONSEEQUIPO EQUIPO, ES.NOMESTU NOMBRE, ES.APELESTU APELLIDO, D.NOMDEPORTE DEPORTE, CURRENT_DATE FECHA, TO_CHAR(CURRENT_DATE, 'HH24:MI') HORA
 -- FROM MIEMBROEQUIPO ME, EQUIPO E, ESTUDIANTE ES, DEPORTE D, ESPACIO_DEPORTE ED, ESPACIO ESP
