@@ -335,18 +335,19 @@ const postPrestamo = async (req, res) => {
             }
             var CONSECPRESTAMO = i + 1;
             var CONSECELEMENTO = id[j];
-            var insertAsis = connection.execute(`INSERT INTO PRESTAMO 
+            var insertAsis = await connection.execute(`INSERT INTO PRESTAMO 
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
-            var updateState = connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
+            var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
             
         }
 
-        // var elementos = connection.execute(`SELECT ED.CONSECELEMENTO ID, ES.DESCESTADO
-        //                                 FROM ELEMENTODEPORTIVO ED, ESTADO ES
-        //                                 WHERE ED.IDESTADO = ES.IDESTADO
-        //                                 AND ES.IDESTADO = '2'`);
-        res.send("json(elementos)");
+        const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
+                                        FROM ELEMENTODEPORTIVO ED, ESTADO ES, TIPOELEMENTO TE
+                                        WHERE ED.IDESTADO = ES.IDESTADO
+                                        AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
+                                        AND ES.IDESTADO = :0`, ['2']);
+        res.send(elementos.rows);
     } catch (error) {
         res.status(500);
         res.send(error.message);
