@@ -222,9 +222,9 @@ const getasisPasante = async (req, res) => {
                                                 AND CURSO.idDep=DTE.IDDEPORTE
                                                 AND E.IDESTADO=ED.IDESTADO`, [codigo]);
         if (resultPasante.rows.length == 0) {
-            res.send('User isn`t intern');
+            res.send(['User isn`t intern']);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length == 0) {
-            res.send([[resultPasante.rows[0]], ['Pasante no tiene Practica Libre Asiganada']]);
+            res.send([resultPasante.rows[0], 'Pasante no tiene Practica Libre Asiganada']);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length != 0) {
             const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows];
             return response.send(result);
