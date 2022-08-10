@@ -202,7 +202,7 @@ const getasisPasante = async (req, res) => {
                                                         -- AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(IDHORA,'HH24:MI')+(15/1440), 'HH24:MI')
                                                         AND CURRENT_DATE>Res.FECHAINI
                                                         AND CURRENT_DATE<Res.FECHAFIN
-                                                        AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/`, [codigo]);
+                                                        -- AND D.IDDIA = TO_CHAR(CURRENT_DATE, 'D')/*eSTO DEPENDE DE LA MAQUINA*/ `, [codigo]);
         const resultElementos = await connection.execute(`SELECT DISTINCT ED.CODESPACIO SEDE, E.DESCESTADO ESTADO, ED.CONSECELEMENTO codEl, TE.DESCTIPOELEMENTO ELEMENTO, ED.CANTIDAD
                                                 FROM (SELECT Pro.CONSECPROGRA idPro, Pro.CODESPACIO codE, Esp.ESP_CODESPACIO SEDE, Dep.IDDEPORTE idDep
                                                     FROM responsable Res, programacion Pro, actividad Act, espacio Esp, deporte Dep
@@ -227,7 +227,7 @@ const getasisPasante = async (req, res) => {
             res.send([resultPasante.rows[0], 'Pasante no tiene Practica Libre Asiganada']);
         } else if (resultPasante.rows.length != 0 && resultPlibres.rows.length != 0) {
             const result = [resultPasante.rows[0], resultPlibres.rows[0], resultElementos.rows];
-            return response.send(result);
+            return res.send(result);
         }
     } catch (error) {
         res.status(500);
@@ -240,13 +240,13 @@ const getEquipos = async (req, res) => {
         const connection = await getConnection();
         const result = await connection.execute('SELECT CONSEEQUIPO EQUIPO FROM EQUIPO');
         if (result.rows.length == 0) {
-            return res.send('There´re not teams');
+            res.send('There´re not teams');
         } else if (result.rows.length != 0) {
-            return res.send(result.rows);
+            res.send(result.rows);
         }
     } catch (error) {
         res.status(500); w
-        return res.send(error.message);
+        res.send(error.message);
     }
 };
 
@@ -275,10 +275,10 @@ const postasisProfe = async (req, res) => {
 
         // console.log(typeof (insertAsis));
 
-        return res.send([CONSECASISRES]);
+        res.send([CONSECASISRES]);
     } catch (error) {
         res.status(500);
-        return res.send(error.message);
+        res.send(error.message);
     }
 };
 
@@ -307,7 +307,7 @@ const postasisPasante = async (req, res) => {
 
         // console.log(typeof (insertAsis));
 
-        return res.send([CONSECASISRES]);
+        res.send([CONSECASISRES]);
     } catch (error) {
         res.status(500);
         res.send(error.message);
@@ -340,7 +340,7 @@ const postPrestamo = async (req, res) => {
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
             var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
-
+            
         }
 
         const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
@@ -348,10 +348,10 @@ const postPrestamo = async (req, res) => {
                                         WHERE ED.IDESTADO = ES.IDESTADO
                                         AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
                                         AND ES.IDESTADO = :0`, ['2']);
-                                        return res.send(elementos.rows);
+        res.send(elementos.rows);
     } catch (error) {
         res.status(500);
-        return res.send(error.message);
+        res.send(error.message);
     }
 };
 
@@ -380,7 +380,7 @@ const postPrestamoPasante = async (req, res) => {
                                                 (CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO) 
                                                 VALUES ( :0 , :1, :2, :3, :4)`, [CONSECPRESTAMO, CONSECPROGRA, CONSECRES, CONSECASISRES, CONSECELEMENTO], { autoCommit: true });
             var updateState = await connection.execute(`UPDATE ELEMENTODEPORTIVO SET IDESTADO = '2' WHERE CONSECELEMENTO = :0`, [CONSECELEMENTO], { autoCommit: true });
-
+            
         }
 
         const elementos = await connection.execute(`SELECT TE.DESCTIPOELEMENTO ID, ES.DESCESTADO
@@ -388,64 +388,13 @@ const postPrestamoPasante = async (req, res) => {
                                         WHERE ED.IDESTADO = ES.IDESTADO
                                         AND ED.IDTIPOELEMENTO = TE.IDTIPOELEMENTO
                                         AND ES.IDESTADO = :0`, ['2']);
-        return res.send(elementos.rows);
+        res.send(elementos.rows);
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
 };
 
-const postEquipo = async (req, res) => {
-    try {
-        const { codigo, equipo } = req.body;
-        var i = 0;
-        const connection = await getConnection();
-        const result = await connection.execute(`SELECT DISTINCT E.CONSEEQUIPO EQUIPO, ES.CODESTU CODIGO, ES.NOMESTU NOMBRE, ES.APELESTU APELLIDO, D.NOMDEPORTE DEPORTE, CURRENT_DATE FECHA, TO_CHAR(CURRENT_DATE, 'HH24:MI') HORA
-                                        FROM MIEMBROEQUIPO ME, EQUIPO E, ESTUDIANTE ES, DEPORTE D, ESPACIO_DEPORTE ED, ESPACIO ESP
-                                        WHERE ME.CONSEEQUIPO = E.CONSEEQUIPO
-                                        AND ME.CODESTU=ES.CODESTU
-                                        AND ME.CODESTU= :0
-                                        AND D.IDDEPORTE=E.IDDEPORTE
-                                        AND ME.CONSEEQUIPO= :1
-                                        AND ED.CODESPACIO = ESP.CODESPACIO`, [codigo, equipo]);
-        const resultI = await connection.execute(`SELECT ME.CONSEEQUIPO, ME.ITEMMIEMBRO
-                                        FROM EQUIPO E, MIEMBROEQUIPO ME
-                                        WHERE E.CONSEEQUIPO = ME.CONSEEQUIPO
-                                        AND ME.CODESTU= :0
-                                        AND ME.CONSEEQUIPO= :1`, [codigo, equipo]);
-        const cond = await connection.execute(`SELECT CONSECPROGRA
-                                            FROM PROGRAMACION P
-                                            WHERE IDACTIVIDAD = 'EN'
-                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') > TO_CHAR(TO_DATE(P.IDHORA,'HH24:MI'), 'HH24:MI')
-                                            AND TO_CHAR(CURRENT_DATE, 'HH24:MI') < TO_CHAR(TO_DATE(P.HOR_IDHORA,'HH24:MI'), 'HH24:MI')`);
-        const max = await connection.execute(`SELECT MAX(CONMIEMBROEQUIPO) FROM ASISMIEMBROEQUIPO`);
-        if (isNaN(max.rows[0])) {
-            i = 0;
-        } else {
-            i = Number(max.rows[0]);
-        }
-        var CONMIEMBROEQUIPO = i + 1;
-        if (cond.rows.length == 0) {
-            return res.send("Fuera de Horario Para Registrar Asistencia");
-        } else if (resultI.rows.length == 0) {
-            return res.send("El estudiante No pertenece a Este Equipo, o no Esta Registrado")
-        } else {
-            var CONSECPROGRA = cond.rows[0][0];
-            var CONSEEQUIPO = resultI.rows[0][0];
-            var ITEMMIEMBRO = resultI.rows[0][1];
-            console.log(result.rows);
-            const asis = await connection.execute(`INSERT INTO ASISMIEMBROEQUIPO 
-                                                (CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO) 
-                                                VALUES (:0, :1, :2, :3)`, [CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO], { autoCommit: true });
-            console.log(CONMIEMBROEQUIPO, CONSECPROGRA, CONSEEQUIPO, ITEMMIEMBRO);
-        }
-
-        res.send("Asistencia Registrada");
-    } catch (error) {
-        res.status(500);
-        res.send(error.message);
-    }
-};
 export const methods = {
     getPrueba,
     getRegisterorAdmin,
@@ -457,6 +406,5 @@ export const methods = {
     postasisProfe,
     postasisPasante,
     postPrestamo,
-    postPrestamoPasante,
-    postEquipo
+    postPrestamoPasante
 };
